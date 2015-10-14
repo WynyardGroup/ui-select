@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.13.1 - 2015-10-01T01:27:43.920Z
+ * Version: 0.13.1 - 2015-10-14T01:56:04.407Z
  * License: MIT
  */
 
@@ -337,7 +337,7 @@ uis.controller('uiSelectCtrl',
         if(!ctrl.tagging.isActivated && ctrl.items.length > 1) {
           _ensureHighlightVisible();
         }
-      });
+      }, ctrl.focusDelay);
     }
   };
 
@@ -503,6 +503,20 @@ uis.controller('uiSelectCtrl',
     return isDisabled;
   };
 
+  // When there was an empty options list provided
+  ctrl.hasNoOptionsProvided = function() {
+    // if something was selected, there were options
+    if (this.selected && this.selected.length) {
+      return false;
+    }
+
+    return this.hasNoOptionsAvailable();
+  };
+
+  // Where is nothing to select from (either no options given, or no options left)
+  ctrl.hasNoOptionsAvailable = function() {
+    return this.items.length === 0;
+  };
 
   // When the user selects an item with ENTER or clicks the dropdown
   ctrl.select = function(item, skipFocusser, $event) {
@@ -820,6 +834,14 @@ uis.directive('uiSelect',
         $select.baseTitle = attrs.title || 'Select box';
         $select.focusserTitle = $select.baseTitle + ' focus';
         $select.focusserId = 'focusser-' + $select.generatedId;
+
+        var focusDelayValue = attrs.uiSelectFocusDelay;
+        if (angular.isDefined(focusDelayValue)){
+          var focusDelay = parseInt(focusDelayValue);
+          $select.focusDelay = isNaN(focusDelay) ? 100 : focusDelay;
+        }
+
+
 
         $select.closeOnSelect = function() {
           if (angular.isDefined(attrs.closeOnSelect)) {

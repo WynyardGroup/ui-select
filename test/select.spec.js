@@ -672,6 +672,52 @@ describe('ui-select tests', function() {
 
   });
 
+  describe('focus delay', function() {
+
+    function createUiSelect(focus) {
+      var focusAttr;
+      if (focus === null)
+        focusAttr = '';
+      else if (focus){
+        focusAttr = 'ui-select-focus-delay="' + focus + '"';
+      }
+      else{
+        focusAttr = 'ui-select-focus-delay';
+      }
+      return compileTemplate(
+      '<ui-select ng-model="selection.selected" x-focus-here> \
+        <ui-select-match placeholder="Pick one...">{{$select.selected.name}}</ui-select-match> \
+        <ui-select-choices group-by="\'group\'" repeat="person in people | filter: $select.search"> \
+          <div ng-bind-html="person.name | highlight: $select.search"></div> \
+          <div ng-bind-html="person.email | highlight: $select.search"></div> \
+        </ui-select-choices> \
+      </ui-select>'
+          .replace('x-focus-here', focusAttr)
+      );
+    }
+
+    it('should recongnize focus delay attribute', function() {
+      var el = createUiSelect("300");
+      expect(el.scope().$select.focusDelay).toBe(300);
+    });
+
+    it('should be default for non-numbers values', function() {
+      var el = createUiSelect("asdasd");
+      expect(el.scope().$select.focusDelay).toBe(100);
+    });
+
+    it('should be optional', function() {
+      var el = createUiSelect(null);
+      expect(el.scope().$select.focusDelay).toBeUndefined();
+    });
+
+    it('should be 100 if no attribute value provided', function() {
+      var el = createUiSelect();
+      expect(el.scope().$select.focusDelay).toBe(100);
+    });
+
+  });
+
   describe('disabled options', function() {
     function createUiSelect(attrs) {
       var attrsDisabled = '';
@@ -836,6 +882,40 @@ describe('ui-select tests', function() {
     afterEach(function() {
       resetScope();
     });
+  });
+
+  describe('empty options', function(){
+
+    var emptyData;
+
+    function createUiSelect() {
+      return compileTemplate(
+      '<ui-select ng-model="selection.selected"> \
+        <ui-select-match placeholder="Pick one...">{{$select.selected.name}}</ui-select-match> \
+        <ui-select-choices repeat="person in emptyData| filter: $select.search"> \
+          <div ng-bind-html="person.name | highlight: $select.search"></div> \
+          <div ng-bind-html="person.email | highlight: $select.search"></div> \
+        </ui-select-choices> \
+      </ui-select>'
+      );
+    }
+
+    beforeEach( function() {
+      emptyData = [];
+      scope.emptyData = emptyData;
+    });
+
+    it ('should return true for hasNoOptionsProvided with no options', function() {
+      var el = createUiSelect();
+      expect(el.scope().$select.hasNoOptionsProvided()).toBeTruthy();
+    });
+
+    it ('should return false for hasNoOptionsProvided with options', function() {
+      emptyData.push({name:'name', email: 'email'});
+      var el = createUiSelect();
+      expect(el.scope().$select.hasNoOptionsProvided()).toBeFalsy();
+    });
+
   });
 
   describe('choices group', function() {

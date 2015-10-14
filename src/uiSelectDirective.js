@@ -33,6 +33,14 @@ uis.directive('uiSelect',
         $select.focusserTitle = $select.baseTitle + ' focus';
         $select.focusserId = 'focusser-' + $select.generatedId;
 
+        var focusDelayValue = attrs.uiSelectFocusDelay;
+        if (angular.isDefined(focusDelayValue)){
+          var focusDelay = parseInt(focusDelayValue);
+          $select.focusDelay = isNaN(focusDelay) ? 100 : focusDelay;
+        }
+
+
+
         $select.closeOnSelect = function() {
           if (angular.isDefined(attrs.closeOnSelect)) {
             return $parse(attrs.closeOnSelect)();

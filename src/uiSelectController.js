@@ -98,7 +98,7 @@ uis.controller('uiSelectCtrl',
         if(!ctrl.tagging.isActivated && ctrl.items.length > 1) {
           _ensureHighlightVisible();
         }
-      });
+      }, ctrl.focusDelay);
     }
   };
 
@@ -264,6 +264,20 @@ uis.controller('uiSelectCtrl',
     return isDisabled;
   };
 
+  // When there was an empty options list provided
+  ctrl.hasNoOptionsProvided = function() {
+    // if something was selected, there were options
+    if (this.selected && this.selected.length) {
+      return false;
+    }
+
+    return this.hasNoOptionsAvailable();
+  };
+
+  // Where is nothing to select from (either no options given, or no options left)
+  ctrl.hasNoOptionsAvailable = function() {
+    return this.items.length === 0;
+  };
 
   // When the user selects an item with ENTER or clicks the dropdown
   ctrl.select = function(item, skipFocusser, $event) {
