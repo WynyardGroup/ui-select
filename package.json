@@ -6,7 +6,17 @@
   "repository": {
     "url": "git://github.com/angular-ui/ui-select.git"
   },
-  "version": "0.14.2",
+  "jspm": {
+    "files": ["dist", "package.json"],
+    "shim": {
+      "*/*": {
+        "deps": [
+          "angular"
+        ]
+      }
+    }
+  },
+  "version": "0.14.3",
   "devDependencies": {
     "bower": "~1.3",
     "del": "~0.1.1",
