@@ -154,7 +154,7 @@ uis.directive('uiSelect',
             contains = element[0].contains(e.target);
           }
 
-          if (!contains && !$select.clickTriggeredSelect) {
+          if (!contains && !$select.clickTriggeredSelect && e.target.className.indexOf('wynyard-select') === -1) {
             //Will lose focus only with certain targets
             var focusableControls = ['input','button','textarea'];
             var targetController = angular.element(e.target).controller('uiSelect'); //To check if target is other ui-select
@@ -312,7 +312,7 @@ uis.directive('uiSelect',
 
               if ($select.dropdownPosition === 'up'){
                   //Go UP
-                  setDropdownPosUp(offset, offsetDropdown);
+                  setDropdownPosUp();
 
               }else{ //AUTO
 
