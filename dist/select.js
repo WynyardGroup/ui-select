@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.13.1 - 2015-10-14T01:56:04.407Z
+ * Version: 0.14.4 - 2016-05-24T02:38:03.557Z
  * License: MIT
  */
 
@@ -956,7 +956,7 @@ uis.directive('uiSelect',
             contains = element[0].contains(e.target);
           }
 
-          if (!contains && !$select.clickTriggeredSelect) {
+          if (!contains && !$select.clickTriggeredSelect && e.target.className.indexOf('wynyard-select') === -1) {
             //Will lose focus only with certain targets
             var focusableControls = ['input','button','textarea'];
             var targetController = angular.element(e.target).controller('uiSelect'); //To check if target is other ui-select
@@ -1114,7 +1114,7 @@ uis.directive('uiSelect',
 
               if ($select.dropdownPosition === 'up'){
                   //Go UP
-                  setDropdownPosUp(offset, offsetDropdown);
+                  setDropdownPosUp();
 
               }else{ //AUTO
 
