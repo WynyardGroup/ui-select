@@ -21,7 +21,7 @@ uis.directive('uiSelect',
       if (angular.isDefined(tAttrs.multiple))
         tElement.append("<ui-select-multiple/>").removeAttr('multiple');
       else
-        tElement.append("<ui-select-single/>");       
+        tElement.append("<ui-select-single/>");
 
       return function(scope, element, attrs, ctrls, transcludeFn) {
 
@@ -51,7 +51,7 @@ uis.directive('uiSelect',
 
         $select.onSelectCallback = $parse(attrs.onSelect);
         $select.onRemoveCallback = $parse(attrs.onRemove);
-        
+
         //Limit the number of selections allowed
         $select.limit = (angular.isDefined(attrs.limit)) ? parseInt(attrs.limit, 10) : undefined;
 
@@ -154,7 +154,7 @@ uis.directive('uiSelect',
             contains = element[0].contains(e.target);
           }
 
-          if (!contains && !$select.clickTriggeredSelect && e.target.className.indexOf('wynyard-select') === -1) {
+          if (!contains && !$select.clickTriggeredSelect && e.target.className.indexOf('wynyard-select__drop') === -1) {
             //Will lose focus only with certain targets
             var focusableControls = ['input','button','textarea'];
             var targetController = angular.element(e.target).controller('uiSelect'); //To check if target is other ui-select
